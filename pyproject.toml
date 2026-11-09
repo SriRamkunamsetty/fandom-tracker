@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fandom-tracker"
+version = "1.0.0"
+description = "Fan-conversation analytics: sentiment, sentence-level aspects, narrative clusters, backlash detection, conversation share"
+authors = [
+    { name = "SriRamKunamsetty", email = "mohansriramkunamsetty@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary]>=3.1"]
+
+[project.scripts]
+fandomwatch = "fandomwatch.cli:main"
+
+[tool.setuptools.package-data]
+fandomwatch = ["schema.sql"]
