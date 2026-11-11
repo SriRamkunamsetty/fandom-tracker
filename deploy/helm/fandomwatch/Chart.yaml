@@ -1,0 +1,16 @@
+apiVersion: v2
+name: fandomwatch
+description: Enterprise AI/ML Fan-Conversation Intelligence Platform (ABSA, Anomaly Detection, Forecasting)
+type: application
+version: 2.0.0
+appVersion: "2.0.0"
+keywords:
+  - aiml
+  - sentiment-analysis
+  - entertainment
+  - anomaly-detection
+  - social-media
+  - kubernetes
+maintainers:
+  - name: SriRamKunamsetty
+    email: mohansriramkunamsetty@gmail.com

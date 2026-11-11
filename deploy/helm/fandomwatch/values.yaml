@@ -1,0 +1,94 @@
+# Default values for fandomwatch Helm chart.
+replicaCount: 2
+
+image:
+  repository: sriramkunamsetty/fandomwatch
+  pullPolicy: IfNotPresent
+  tag: "2.0.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8000"
+  prometheus.io/path: "/metrics"
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/rate-limit-rps: "100"
+  hosts:
+    - host: fandom.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: fandomwatch-tls-cert
+      hosts:
+        - fandom.example.com
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+env:
+  APP_ENV: "production"
+  LOG_LEVEL: "INFO"
+  PROMETHEUS_ENABLED: "true"
+  CORS_ORIGINS: "*"
+
+secrets:
+  DATABASE_URL: "postgresql://fandom_user:fandom_secret@fandomwatch-postgresql:5432/fandom_db"
+  REDIS_URL: "redis://:redis_secret@fandomwatch-redis:6379/0"
+  YOUTUBE_API_KEY: ""
+  ANTHROPIC_API_KEY: ""
+  GEMINI_API_KEY: ""
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+  - name: 'FandomWatch Dashboards'
+    orgId: 1
+    folder: 'FandomWatch'
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 15
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards

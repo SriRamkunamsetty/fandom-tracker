@@ -1,0 +1,32 @@
+groups:
+  - name: fandomwatch_alerts
+    rules:
+      - alert: BacklashCriticalIncidentDetected
+        expr: fandom_backlash_episodes_active{severity="critical"} > 0
+        for: 1m
+        labels:
+          severity: critical
+          team: pr-crisis-response
+        annotations:
+          summary: "Critical fan backlash detected on title: {{ $labels.title }}"
+          description: "Anomalous negative conversation surge exceeded 60% negative share on title {{ $labels.title }}."
+
+      - alert: ApiHighLatency
+        expr: histogram_quantile(0.95, sum(rate(fandom_http_request_duration_seconds_bucket[5m])) by (le)) > 1.0
+        for: 2m
+        labels:
+          severity: warning
+          team: platform-sre
+        annotations:
+          summary: "FandomWatch API P95 latency > 1.0s"
+          description: "95th percentile response time is {{ $value }}s over the last 5 minutes."
+
+      - alert: Api5xxErrorRateHigh
+        expr: sum(rate(fandom_http_requests_total{status=~"5.."}[5m])) / sum(rate(fandom_http_requests_total[5m])) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+          team: platform-sre
+        annotations:
+          summary: "Elevated 5xx HTTP error rate on FandomWatch API"
+          description: "5xx error rate is currently {{ $value | humanizePercentage }}."

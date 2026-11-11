@@ -58,6 +58,8 @@ def connect(target: str = ":memory:", check_same_thread: bool = True):
             conn.execute(stmt)
         conn.commit()
         return conn
+    if target.startswith("sqlite:///"):
+        target = target.replace("sqlite:///", "")
     conn = sqlite3.connect(target, check_same_thread=check_same_thread)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")

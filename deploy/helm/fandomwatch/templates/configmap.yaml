@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "fandomwatch.fullname" . }}-config
+  labels:
+    {{- include "fandomwatch.labels" . | nindent 4 }}
+data:
+  APP_ENV: {{ .Values.env.APP_ENV | default "production" | quote }}
+  LOG_LEVEL: {{ .Values.env.LOG_LEVEL | default "INFO" | quote }}
+  PROMETHEUS_ENABLED: {{ .Values.env.PROMETHEUS_ENABLED | default "true" | quote }}
+  CORS_ORIGINS: {{ .Values.env.CORS_ORIGINS | default "*" | quote }}
+  HOST: "0.0.0.0"
+  PORT: {{ .Values.service.targetPort | default 8000 | quote }}

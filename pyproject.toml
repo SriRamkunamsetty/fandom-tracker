@@ -4,16 +4,61 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fandom-tracker"
-version = "1.0.0"
-description = "Fan-conversation analytics: sentiment, sentence-level aspects, narrative clusters, backlash detection, conversation share"
+version = "2.0.0"
+description = "Enterprise AI/ML Fan-Conversation Intelligence Platform: ABSA, semantic narrative clustering, backlash anomaly forecasting, Kubernetes & MLOps"
+readme = "README.md"
 authors = [
     { name = "SriRamKunamsetty", email = "mohansriramkunamsetty@gmail.com" }
 ]
+license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
-postgres = ["psycopg[binary]>=3.1"]
+api = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.28.0",
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.2.0",
+]
+ml = [
+    "numpy>=1.24.0",
+    "scikit-learn>=1.3.0",
+]
+worker = [
+    "redis>=5.0.0",
+]
+postgres = [
+    "psycopg[binary]>=3.1",
+    "asyncpg>=0.29.0",
+    "sqlalchemy>=2.0.0",
+]
+observability = [
+    "prometheus-client>=0.20.0",
+    "structlog>=24.1.0",
+]
+all = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.28.0",
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.2.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.3.0",
+    "redis>=5.0.0",
+    "psycopg[binary]>=3.1",
+    "asyncpg>=0.29.0",
+    "sqlalchemy>=2.0.0",
+    "prometheus-client>=0.20.0",
+    "structlog>=24.1.0",
+]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.3.0",
+    "mypy>=1.9.0",
+    "httpx>=0.27.0",
+]
 
 [project.scripts]
 fandomwatch = "fandomwatch.cli:main"
